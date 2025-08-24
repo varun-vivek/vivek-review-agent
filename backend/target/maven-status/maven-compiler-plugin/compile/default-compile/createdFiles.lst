@@ -1,0 +1,9 @@
+com\example\gitlabagent\service\GitlabService.class
+com\example\gitlabagent\service\ReviewService.class
+com\example\gitlabagent\dto\LlmComment.class
+com\example\gitlabagent\service\IntentService.class
+com\example\gitlabagent\dto\PromptRequest.class
+com\example\gitlabagent\service\LlmService.class
+com\example\gitlabagent\controller\PromptController.class
+com\example\gitlabagent\GitlabLlmAgentApplication.class
+com\example\gitlabagent\dto\LlmReviewResponse.class

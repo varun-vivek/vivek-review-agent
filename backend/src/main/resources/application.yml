@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+app:
+  gitlab:
+    base-url: https://gitlab.com/api/v4/
+    project-id: 73657207
+    token: glpat-nczANd5zTyJ1CBfHGN9mPm86MQp1Omhybjd5Cw.01.120kafb2j
+  llm:
+    base-url: http://localhost:11434
+    chat-path: /api/chat
