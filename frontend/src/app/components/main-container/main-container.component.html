@@ -1,0 +1,60 @@
+<div class="chat-container">
+  <!-- Initial prompt screen -->
+  <div *ngIf="!showResults && !showReview" class="prompt-screen">
+    <div class="input-wrapper centered">
+      <input
+        type="text"
+        placeholder="Ask anything..."
+        [(ngModel)]="prompt"
+        (keyup.enter)="sendPrompt()"
+      />
+      <button (click)="sendPrompt()">
+        <span class="material-icons">send</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MR results screen -->
+  <div *ngIf="showResults && !showReview" class="results-screen">
+    <button class="back-btn" (click)="backToPrompt()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+
+    <div class="card-grid">
+      <div *ngFor="let mr of mrList" class="card-wrapper">
+        <div class="mr-card" [ngClass]="getStatusClass(mr.status)">
+          <div class="card-top">
+            <h2>{{ mr.id }}</h2>
+          </div>
+          <div class="card-body">
+            <p>Status: <strong>{{ mr.status }}</strong></p>
+            <p>Author: {{ mr.author?.name }}</p>
+            <button (click)="review(mr)">Review</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review detail screen -->
+  <div *ngIf="showReview" class="review-screen">
+    <button class="back-btn" (click)="backToResults()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+
+    <div class="review-details">
+      <div class="mr-info">
+        <h2>{{ selectedMr?.id }}</h2>
+        <p>Status: <strong>{{ selectedMr?.status }}</strong></p>
+        <p>Author: {{ selectedMr?.author?.name }}</p>
+      </div>
+
+      <div class="process-info">
+        <h3>Review Process</h3>
+        <p><strong>Files:</strong> {{ processInfo?.files }}</p>
+        <p><strong>Failed:</strong> {{ processInfo?.failed }}</p>
+        <p><strong>Status:</strong> {{ processInfo?.status }}</p>
+      </div>
+    </div>
+  </div>
+</div>

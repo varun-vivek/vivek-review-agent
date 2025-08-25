@@ -1,0 +1,161 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Prompt Screen */
+.prompt-screen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  width: 70%;
+  max-width: 800px;
+  margin: auto;
+
+  input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #000;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1976d2;
+
+    .material-icons {
+      font-size: 24px;
+    }
+  }
+}
+
+/* Results Screen (cards) */
+.results-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #1976d2;
+  font-size: 1.5rem;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.card-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding: 10px 65px;
+  overflow-y: auto;
+  align-content: flex-start;
+  box-sizing: border-box;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.mr-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Review Screen (new full page) */
+.review-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  overflow-y: auto;
+  background: #fafafa;
+}
+
+.review-header {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #1976d2;
+  }
+
+  p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+}
+
+.review-body {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.75rem 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #444;
+  }
+}
+
+/* Status coloring */
+.open {
+  border-left: 5px solid #4caf50;
+}
+.merged {
+  border-left: 5px solid #2196f3;
+}
+.closed {
+  border-left: 5px solid #f44336;
+}
