@@ -76,8 +76,35 @@ public class ReviewService {
                 )
             );
 
-            LlmReviewResponse response = llmService.chatToObject(messages, LlmReviewResponse.class);
-            if (response != null && response.getComments() != null) {
+            LlmReviewResponse response = null;
+            int attempts = 0;
+            Exception lastEx = null;
+
+            while (attempts < 3 && response == null) {  // max 3 tries
+                try {
+                    response = llmService.chatToObject(messages, LlmReviewResponse.class);
+                } catch (Exception ex) {
+                    attempts++;
+                    lastEx = ex;
+                    if (attempts < 3) {
+                        try {
+                            Thread.sleep(500); // optional backoff
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                }
+            }
+
+            if (response == null) {
+                // skip this chunk after 3 failures
+                System.err.println("Skipping chunk for file " + filePath +
+                        " after 3 failed attempts. Last error: " +
+                        (lastEx != null ? lastEx.getMessage() : "unknown"));
+                continue;
+            }
+
+            if (response.getComments() != null) {
                 allComments.addAll(response.getComments());
             }
         }
