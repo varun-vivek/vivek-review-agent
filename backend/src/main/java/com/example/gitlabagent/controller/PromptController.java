@@ -89,7 +89,33 @@ public class PromptController {
                                 }
                                 for (LlmComment c : resp.getComments()) {
                                     emitter.send("Posting inline comment at " + c.getFilePath() + ":" + c.getLine());
-                                    gitlabService.addInlineComment(mrId, c, baseSha, startSha, headSha);
+                                    boolean success = false;
+                                    int attempts = 0;
+                                    Exception lastEx = null;
+
+                                    while (attempts < 3 && !success) {  // total 3 attempts (1 original + 2 retries)
+                                        try {
+                                            gitlabService.addInlineComment(mrId, c, baseSha, startSha, headSha);
+                                            success = true;
+                                        } catch (Exception ex) {
+                                            attempts++;
+                                            lastEx = ex;
+                                            emitter.send("Failed to post comment (attempt " + attempts + "): " + ex.getMessage());
+                                            if (attempts < 3) {
+                                                try {
+                                                    Thread.sleep(500); // small backoff, optional
+                                                } catch (InterruptedException ie) {
+                                                    Thread.currentThread().interrupt();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (!success) {
+                                        emitter.send("Skipping comment at " + c.getFilePath() + ":" + c.getLine()
+                                                + " after 3 failed attempts. Last error: "
+                                                + (lastEx != null ? lastEx.getMessage() : "unknown"));
+                                    }
                                 }
                             }
                         }
