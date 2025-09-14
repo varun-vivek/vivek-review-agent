@@ -105,52 +105,6 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 
-
-
-
-
-
-python 
-
-
-
-# Dockerfile
-FROM python:3.11-slim
-
-# Set working directory
-WORKDIR /app
-
-# Create and activate virtual environment
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-
-# Ensure we're using the virtual environment
-RUN which python && python --version
-
-# Copy requirements file first (for better caching)
-COPY requirements.txt .
-
-# Install Python dependencies in virtual environment
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY . .
-
-# Expose port if your Python app serves HTTP
-EXPOSE 8000
-
-# Ensure virtual environment is used when running
-ENV PATH="/app/venv/bin:$PATH"
-
-# Command to run the application
-CMD ["python", "your_main_file.py"]
-
-
-
-
-
-
 jar 
 
 # Use official OpenJDK runtime as base image
@@ -176,6 +130,56 @@ docker build -t your-app-name .
 
 # Run with port 9998
 docker run -p 9998:9998 your-app-name
+
+
+
+
+
+
+
+python 
+
+# Use Python 3.9 slim image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create and activate virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy requirements file (create this if you don't have one)
+COPY requirements.txt .
+
+# Install Python dependencies in virtual environment
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Create the model directory structure
+RUN mkdir -p /home/work/python
+
+# Copy your local SentenceTransformer model to the container
+COPY ./all-MiniLM-L6-v2 /home/work/python/all-MiniLM-L6-v2
+
+# Copy your Python application
+COPY . .
+
+# Expose the port
+EXPOSE 8000
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Run the application
+CMD ["python", "main.py"]
+
 
 
 
