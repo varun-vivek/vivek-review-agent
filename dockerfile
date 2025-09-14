@@ -98,3 +98,52 @@ CMD ["nginx", "-g", "daemon off;"]
 # # Run the container on port 4200
 
 # docker run -p 4200:4200 my-angular-app
+
+
+
+
+
+
+
+
+
+
+
+
+python 
+
+
+
+# Dockerfile
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Create and activate virtual environment
+RUN python -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Ensure we're using the virtual environment
+RUN which python && python --version
+
+# Copy requirements file first (for better caching)
+COPY requirements.txt .
+
+# Install Python dependencies in virtual environment
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Expose port if your Python app serves HTTP
+EXPOSE 8000
+
+# Ensure virtual environment is used when running
+ENV PATH="/app/venv/bin:$PATH"
+
+# Command to run the application
+CMD ["python", "your_main_file.py"]
+
+
