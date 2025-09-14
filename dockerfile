@@ -147,3 +147,40 @@ ENV PATH="/app/venv/bin:$PATH"
 CMD ["python", "your_main_file.py"]
 
 
+
+
+
+
+jar 
+# Dockerfile.jar
+FROM openjdk:11-jre-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy JAR file and any related files
+COPY your-jar-file.jar app.jar
+COPY config/ config/
+COPY data/ data/
+# Add any other directories or files your JAR needs:
+# COPY lib/ lib/
+# COPY resources/ resources/
+# COPY application.properties .
+
+# Expose the port
+EXPOSE 9998
+
+# Add health check endpoint test (adjust URL as needed)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:9998/health || exit 1
+
+# Run the JAR file
+CMD ["java", "-jar", "app.jar"]
+
+# Alternative with JVM options:
+# CMD ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
+
+# If your JAR needs specific parameters:
+# CMD ["java", "-jar", "app.jar", "--server.port=9998", "--spring.profiles.active=docker"]
+
+
