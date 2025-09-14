@@ -152,35 +152,24 @@ CMD ["python", "your_main_file.py"]
 
 
 jar 
-# Dockerfile.jar
-FROM openjdk:11-jre-slim
 
-# Set working directory
+# Use official OpenJDK runtime as base image
+FROM openjdk:17-jre-slim
+
+# Set working directory in container
 WORKDIR /app
 
-# Copy JAR file and any related files
-COPY your-jar-file.jar app.jar
-COPY config/ config/
-COPY data/ data/
-# Add any other directories or files your JAR needs:
-# COPY lib/ lib/
-# COPY resources/ resources/
-# COPY application.properties .
+# Copy the jar file to the container
+COPY your-app.jar app.jar
 
 # Expose the port
 EXPOSE 9998
 
-# Add health check endpoint test (adjust URL as needed)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:9998/health || exit 1
+# Set default port
+ENV PORT=9998
 
-# Run the JAR file
-CMD ["java", "-jar", "app.jar"]
+# Run the jar file
+CMD ["sh", "-c", "java -jar app.jar --port ${PORT}"]
 
-# Alternative with JVM options:
-# CMD ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
-
-# If your JAR needs specific parameters:
-# CMD ["java", "-jar", "app.jar", "--server.port=9998", "--spring.profiles.active=docker"]
 
 
