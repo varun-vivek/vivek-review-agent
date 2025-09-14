@@ -171,5 +171,12 @@ ENV PORT=9998
 # Run the jar file
 CMD ["sh", "-c", "java -jar app.jar --port ${PORT}"]
 
+# Build the image
+docker build -t your-app-name .
+
+# Run with port 9998
+docker run -p 9998:9998 your-app-name
+
+
 
 
