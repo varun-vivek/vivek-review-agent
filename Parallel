@@ -1,0 +1,27 @@
+import requests
+
+PARALLEL_API_KEY = "YOUR_PARALLEL_API_KEY"
+
+PARALLEL_SEARCH_URL = "https://api.parallel.ai/search"
+
+def parallel_web_search(objective: str, top_k: int = 5):
+    headers = {
+        "Authorization": f"Bearer {PARALLEL_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    payload = {
+        "objective": objective,   # natural language search goal
+        "top_k": top_k
+    }
+
+    response = requests.post(
+        PARALLEL_SEARCH_URL,
+        headers=headers,
+        json=payload,
+        timeout=30
+    )
+
+    response.raise_for_status()
+    return response.json()
